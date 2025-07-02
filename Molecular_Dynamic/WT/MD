@@ -1,0 +1,24 @@
+#!/bin/bash
+source /usr/local/gromacs/bin/GMXRC
+
+#echo 0 0| 
+#gmx trjconv -f ../2am9-06.xtc -s ../2am9-06.tpr -o md.xtc -center -pbc nojump 
+#echo 1 0 |
+#gmx trjconv -f md.xtc -s ../2am9-06.tpr -o md2.xtc -center -pbc mol -ur compact
+#echo 0 0 |
+#gmx trjconv -f md2.xtc -s ../2am9-06.tpr -o md3.xtc -fit rot+trans
+echo 0 |  
+gmx trjconv -f md3.xtc -s ../2am9-06.tpr -o md.gro -dump 0 
+echo 0 |  
+gmx trjconv -f md3.xtc -s ../2am9-06.tpr -o md-f.gro -dump 500000   
+echo 1 1|
+gmx rms -f md3.xtc -s ../2am9-06.tpr -o rmsd.xvg -tu ns  
+echo 1|
+gmx rmsf -f md3.xtc -s ../2am9-06.tpr -o rmsf.xvg -res 
+echo 1|
+gmx gyrate -f md3.xtc -s ../2am9-06.tpr -o rg.xvg  
+echo 1|
+gmx sasa -f md3.xtc -s ../2am9-06.tpr -o sasa.xvg -tu ns
+echo 1 13 |
+gmx hbond -f md3.xtc -s ../2am9-06.tpr -num hbond.xvg -tu ns
+  rm \#*

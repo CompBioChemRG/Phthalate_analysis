@@ -1,0 +1,8 @@
+#!/bin/bash
+
+conda activate AmberTools22
+echo q|
+gmx make_ndx -f ../../complex-04.tpr -o index.ndx 
+gmx_MMPBSA -O -i mmpbsa.in -cs ../../complex-04.tpr -ci index.ndx -cg 1 13 -ct ../md3.xtc -cp ../../topol.top -o FINAL_RESULTS_MMPBSA.dat -eo FINAL_RESULTS_MMPBSA.csv -deo FINAL_DECOMP_MMPBSA.csv
+  rm \#*
+  

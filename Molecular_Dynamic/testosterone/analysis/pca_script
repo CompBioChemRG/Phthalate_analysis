@@ -1,0 +1,6 @@
+#!/bin/bash
+source /usr/local/gromacs/bin/GMXRC
+echo 1 1| 
+gmx covar -f md3.xtc -s ../complex-04.tpr -o eiginval.xvg -tu ns -xpm covara.xpm -av average.pdb
+echo 1 1| 
+gmx anaeig -v eigenvec.trr -f md3.xtc -s ../complex-04.tpr -comp eigcomp.xvg -rmsf eigrmsf.xvg -2d 2d.xvg -tu ns -first 1 -last 2 -proj proj1.xvg
