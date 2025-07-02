@@ -1,0 +1,16 @@
+#!/bin/bash
+source /usr/local/gromacs/bin/GMXRC
+
+for file in complex.gro
+do
+  nuev=$(echo $file | sed 's/.gro//g' ) 
+  gmx grompp -f em.mdp -c $file -p topol.top -o $nuev-01.tpr -po $nuev-01.mdp -r $file
+  gmx mdrun -nice 0 -v -s -deffnm $nuev-01 
+  gmx grompp -f nvt.mdp -c $nuev-01.gro -p topol.top -o $nuev-02.tpr -po $nuev-02.mdp -r $nuev-01.gro -maxwarn 1
+  gmx mdrun -nice 0 -v -s -deffnm $nuev-02 -gpu_id 0
+  gmx grompp -f npt.mdp -c $nuev-02.gro -p topol.top -o $nuev-03.tpr -po $nuev-03.mdp -r $nuev-02.gro -maxwarn 1
+  gmx mdrun -nice 0 -v -s -deffnm $nuev-03 -gpu_id 0
+  gmx grompp -f npt2.mdp -c $nuev-03.gro -p topol.top -o $nuev-04.tpr -po $nuev-04.mdp -r $nuev-03.gro -maxwarn 1
+  gmx mdrun -nice 0 -v -s -deffnm $nuev-04 -gpu_id 0
+  rm \#*
+done
